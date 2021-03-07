@@ -41,7 +41,7 @@ def get_event_image(url):
 
         # Get the real image link
         imgs = driver.find_element_by_xpath('//*[@data-visualcompletion="media-vc-image"]')
-        src_value = imgs.get_attribute('src'))
+        src_value = imgs.get_attribute('src')
     except:
         return ''
 
