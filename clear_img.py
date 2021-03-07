@@ -45,4 +45,4 @@ def get_event_image(url):
     except:
         return ''
 
-    retrun src_value
+    return src_value
