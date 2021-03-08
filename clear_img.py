@@ -44,8 +44,8 @@ def get_event_image(url):
     print('Scrape complete')
 
     page = driver.page_source
-    with open('page.html', 'w') as f:
-        f.write(page)
+    # with open('page.html', 'w') as f:
+    #     f.write(page)
 
     # Get photo link
     link=driver.find_element_by_css_selector('a.'+'.'.join(cl.split(' ')))
