@@ -43,6 +43,8 @@ def get_event_image(url):
     sleep(5)
     print('Scrape complete')
 
+    print(driver.page_source)
+
     # Get photo link
     link=driver.find_element_by_css_selector('a.'+'.'.join(cl.split(' ')))
     url_l=link.get_attribute('href')
