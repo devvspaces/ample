@@ -21,7 +21,7 @@ def get_event_image(url):
     cl='oajrlxb2 g5ia77u1 qu0x051f esr5mh6w e9989ue4 r7d6kgcz rq0escxv nhd2j8a9 a8c37x1j p7hjln8o kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x jb3vyjys rz4wbd8a qt6c0cv9 a8nywdso i1ao9s8h esuyzwwr f1sip0of lzcic4wl l9j0dhe7 abiwlrkh p8dawk7l'
 
     # Login facebook with selenium webdriver
-    driver = webdriver.Chrome(chrome_options=option)
+    driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
     driver.get('http://www.facebook.com')
 
     username = driver.find_element_by_id('email')
