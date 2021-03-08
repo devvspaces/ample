@@ -7,7 +7,7 @@ import CONFIG
 option = webdriver.ChromeOptions()
 #option.binary_location = GOOGLE_CHROME_BIN
 # option.add_argument("--headless")  
-# option.add_argument("--disable-dev-shm-usage")
+option.add_argument("--disable-dev-shm-usage")
 option.add_argument("--no-sandbox")
 option.add_argument("--disable-setuid-sandbox")
 # option.add_argument('--disable-gpu')
