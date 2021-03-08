@@ -1,5 +1,8 @@
-FB_EMAIL = 'sadatakash018@gmail.com'
-FB_PASSWORD = 'acimis15900#6'
+# FB_EMAIL = 'sadatakash018@gmail.com'
+# FB_PASSWORD = 'acimis15900#6'
+
+FB_EMAIL = '01630456676'
+FB_PASSWORD = '$$$##ami2tumi'
 
 MYSQL_HOST = 'localhost'
 MYSQL_USER = 'root'
