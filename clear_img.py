@@ -47,7 +47,7 @@ def get_event_image(url):
     # page = driver.page_source.encode().decode()
     # with open('page.html', 'w') as f:
     #     f.write(page)
-    # linki=driver.find_elements_by_css_selector('a')
+    linki=driver.find_element_by_css_selector('a')
 
     # Get photo link
     link=driver.find_element_by_css_selector('a.'+'.'.join(cl.split(' ')))

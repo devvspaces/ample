@@ -20,7 +20,7 @@ from itertools import chain
 import xml.dom.minidom
 import time
 
-from avg_img import gei
+from min_img import gei
 # from apscheduler.schedulers.blocking import BlockingScheduler
 
 # sched = BlockingScheduler()
