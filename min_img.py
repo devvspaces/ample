@@ -32,4 +32,4 @@ def gei(url):
 
     # Getting the image now
     img=driver.find_element_by_xpath("//img[@class='spotlight']")
-    return img.get_attribute('src')
+    return str(img.get_attribute('src'))
