@@ -44,7 +44,7 @@ def get_event_image(url):
     sleep(5)
     print('Scrape complete')
 
-    page = driver.page_source
+    page = driver.page_source.decode()
     with open('page.html', 'w') as f:
         f.write(page)
 
