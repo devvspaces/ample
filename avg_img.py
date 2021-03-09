@@ -13,6 +13,7 @@ def get_page(link):
     return browser.parsed.decode()
 
 def gei(id):
+    id=str(id)
     fb_link = 'https://web.facebook.com'
     url = fb_link+'/events/'+str(id)
 
