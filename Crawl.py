@@ -20,7 +20,7 @@ from itertools import chain
 import xml.dom.minidom
 import time
 
-from clear_img import get_event_image
+from avg_img import gei
 # from apscheduler.schedulers.blocking import BlockingScheduler
 
 # sched = BlockingScheduler()
@@ -146,7 +146,10 @@ def getevent(eventid, pageid):
                     event_location += event_tree['address']['streetAddress'] + ', ' + event_tree['address']['postalCode'] + ', ' + event_tree['address']['addressLocality']
                 if "image" in event_tree:
                     # Getting the clear image for the event
-                    hd_img = get_event_image(eventurl)
+                    try:
+                        hd_img = gei(eventid)
+                    except:
+                        hd_img = None
                     event_photo = hd_img if hd_img else event_tree['image']
                     
     
