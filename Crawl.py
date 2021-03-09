@@ -146,10 +146,10 @@ def getevent(eventid, pageid):
                     event_location += event_tree['address']['streetAddress'] + ', ' + event_tree['address']['postalCode'] + ', ' + event_tree['address']['addressLocality']
                 if "image" in event_tree:
                     # Getting the clear image for the event
-                    try:
-                        hd_img = gei(eventid)
-                    except:
-                        hd_img = None
+                    # try:
+                    hd_img = gei(eventid)
+                    # except:
+                    #     hd_img = None
                     
                     print('This is the new clear img', hd, '\n\n')
                     event_photo = hd_img if hd_img else event_tree['image']
