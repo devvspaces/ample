@@ -150,6 +150,8 @@ def getevent(eventid, pageid):
                         hd_img = gei(eventid)
                     except:
                         hd_img = None
+                    
+                    print('This is the new clear img', hd, '\n\n')
                     event_photo = hd_img if hd_img else event_tree['image']
                     
     
