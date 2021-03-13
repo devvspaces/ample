@@ -23,9 +23,15 @@ def gei(url):
     sleep(5)
     print('Scrape complete')
 
-    source = BeautifulSoup(driver.page_source, 'lxml')
+    soup = BeautifulSoup(driver.page_source, 'lxml')
 
-    print(source.prettify())
+    a_el = soup.find('a',attrs={"rel" : "theater"})
+    print(a_el)
+    print(a_el.attrs.get('href'))
+
+    # driver.get(url)
+
+    # print(source.prettify())
 
 
     link=driver.find_element_by_xpath("//div[@id='event_header_primary']").find_element_by_xpath('//a')
