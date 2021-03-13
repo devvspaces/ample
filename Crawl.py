@@ -28,7 +28,7 @@ from min_img import gei
 
 """ headers = {'user-agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36'}
 proxies = {'https': 'https://88.209.225.150:53281', 'http': 'http://88.209.225.150:53281'} """
-file = 'del.html';
+file = 'del.html'
 mapurl = "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyAHrHn5zdJ-o0Qz1ZYd9P36tE2QIy8cO8c&query="
 geolocator = Nominatim(user_agent="myagent")
 session = Session()
@@ -108,6 +108,13 @@ def getevent(eventid, pageid):
 
             tree = html.fromstring(browser.parsed.encode())
 
+            # Getting the clear image for the event
+            # try:
+            hd_img = gei(eventid)
+            # except:
+            #     hd_img = None
+            event_photo = hd_img
+
 
             '''with open(file, "w", encoding="utf-8") as text_file:
                 print(browser.parsed.encode(), file=text_file)
@@ -124,7 +131,8 @@ def getevent(eventid, pageid):
                 if "name" in event_tree:
                     event_title = event_tree['name'].replace("'", "`")
                 if "image" in event_tree:
-                    event_photo = event_tree['image']
+                    event_photo = hd_img
+                    # event_photo = event_tree['image']
 
                 dateto = None
                 datefrom = None
@@ -145,14 +153,9 @@ def getevent(eventid, pageid):
                 if "address" in event_tree:
                     event_location += event_tree['address']['streetAddress'] + ', ' + event_tree['address']['postalCode'] + ', ' + event_tree['address']['addressLocality']
                 if "image" in event_tree:
-                    # Getting the clear image for the event
-                    # try:
-                    hd_img = gei(eventid)
-                    # except:
-                    #     hd_img = None
-                    
-                    print('This is the new clear img', hd, '\n\n')
-                    event_photo = hd_img if hd_img else event_tree['image']
+                    event_photo = hd_img
+                    # print('This is the new clear img', hd, '\n\n')
+                    # event_photo = hd_img if hd_img else event_tree['image']
                     
     
                 # event_description = get_description(tree)
