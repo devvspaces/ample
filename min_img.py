@@ -12,8 +12,8 @@ option.add_argument('--disable-gpu')
 option.add_argument("--incognito")
 
 
-# driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
-driver = webdriver.Chrome('/Users/HP6460B/Downloads/driver_all/chromedriver')
+driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
+# driver = webdriver.Chrome('/Users/HP6460B/Downloads/driver_all/chromedriver')
 
 def gei(url):
     print('Scraping link started')
