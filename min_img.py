@@ -14,8 +14,8 @@ option.add_argument('--disable-gpu')
 option.add_argument("--incognito")
 
 
-driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
-# driver = webdriver.Chrome('/Users/HP6460B/Downloads/driver_all/chromedriver')
+# driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
+driver = webdriver.Chrome('/Users/HP6460B/Downloads/driver_all/chromedriver')
 
 fb_link = 'https://web.facebook.com'
 
@@ -36,6 +36,11 @@ def gei(url):
 
     soup = BeautifulSoup(driver.page_source, 'lxml')
     print(soup.prettify())
+
+    # data-visualcompletion="media-vc-image"
+    # img_el = soup.find('img',attrs={"data-visualcompletion" : "media-vc-image"})
+    for img in soup.find_all('img'):
+        print(img)
 
 
     link=driver.find_element_by_xpath("//div[@id='event_header_primary']").find_element_by_xpath('//a')
