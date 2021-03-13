@@ -17,6 +17,8 @@ option.add_argument("--incognito")
 driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
 # driver = webdriver.Chrome('/Users/HP6460B/Downloads/driver_all/chromedriver')
 
+fb_link = 'https://web.facebook.com'
+
 def gei(url):
     print('Scraping link started')
     driver.get(url)
@@ -26,12 +28,14 @@ def gei(url):
     soup = BeautifulSoup(driver.page_source, 'lxml')
 
     a_el = soup.find('a',attrs={"rel" : "theater"})
-    print(a_el)
-    print(a_el.attrs.get('href'))
+    rel_link = fb_link + a_el.attrs.get('href')
 
-    # driver.get(url)
+    print('Scraping the real link ', rel_link)
+    driver.get(rel_link)
 
-    # print(source.prettify())
+
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    print(source.prettify())
 
 
     link=driver.find_element_by_xpath("//div[@id='event_header_primary']").find_element_by_xpath('//a')
