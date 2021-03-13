@@ -12,7 +12,8 @@ option.add_argument('--disable-gpu')
 option.add_argument("--incognito")
 
 
-driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
+# driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
+driver = webdriver.Chrome('/Users/HP6460B/Downloads/driver_all/chromedriver')
 
 def gei(url):
     print('Scraping link started')
@@ -21,7 +22,9 @@ def gei(url):
     print('Scrape complete')
 
 
-    link=driver.find_element_by_xpath("//a[@rel='theater']")
+    link=driver.find_element_by_xpath("//div[@id='event_header_primary']").find_element_by_xpath('//a')
+    
+    print('Found the link\n\n', link)
     
     
     link.click()
@@ -33,3 +36,6 @@ def gei(url):
     # Getting the image now
     img=driver.find_element_by_xpath("//img[@class='spotlight']")
     return str(img.get_attribute('src'))
+
+url = 'https://web.facebook.com/events/172698764285893'
+print(gei(url))
