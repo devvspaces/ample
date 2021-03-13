@@ -110,7 +110,8 @@ def getevent(eventid, pageid):
 
             # Getting the clear image for the event
             # try:
-            hd_img = gei(eventid)
+            hd_img = gei(eventurl)
+            print(hd_img)
             # except:
             #     hd_img = None
             event_photo = hd_img
