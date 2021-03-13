@@ -24,7 +24,7 @@ def gei(url):
 
     link=driver.find_element_by_xpath("//div[@id='event_header_primary']").find_element_by_xpath('//a')
     
-    print('Found the link\n\n', link)
+    print('Found the link\n\n', link.get_attribute('href'))
     
     
     link.click()
