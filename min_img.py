@@ -35,7 +35,7 @@ def gei(url):
 
 
     soup = BeautifulSoup(driver.page_source, 'lxml')
-    print(source.prettify())
+    print(soup.prettify())
 
 
     link=driver.find_element_by_xpath("//div[@id='event_header_primary']").find_element_by_xpath('//a')
