@@ -99,221 +99,221 @@ def getEventJson(tree):
 
 def getevent(eventid, pageid):
     global inserted_count
-    try:
-        event = query_db("SELECT * FROM events WHERE id=%s"%eventid)
-        if len(event) == 0:
-            print('\x1b[6;33;40m' + 'Getting event: ' + str(eventid) + '\x1b[0m', end="")
-            eventurl = "https://mobile.facebook.com/events/"+eventid
-            browser.open(eventurl)
+    # try:
+    event = query_db("SELECT * FROM events WHERE id=%s"%eventid)
+    if len(event) == 0:
+        print('\x1b[6;33;40m' + 'Getting event: ' + str(eventid) + '\x1b[0m', end="")
+        eventurl = "https://mobile.facebook.com/events/"+eventid
+        browser.open(eventurl)
 
-            tree = html.fromstring(browser.parsed.encode())
+        tree = html.fromstring(browser.parsed.encode())
 
-            # Getting the clear image for the event
-            # try:
-            hd_img = gei(eventurl)
-            print(hd_img)
-            # except:
-            #     hd_img = None
-            event_photo = hd_img
+        # Getting the clear image for the event
+        # try:
+        hd_img = gei(eventurl)
+        print(hd_img)
+        # except:
+        #     hd_img = None
+        event_photo = hd_img
 
 
+        '''with open(file, "w", encoding="utf-8") as text_file:
+            print(browser.parsed.encode(), file=text_file)
+        print('Opening browser...')
+        webbrowser.open_new_tab(file)
+        sleep(1)'''
+        event_tree = getEventJson(tree)
+        if event_tree:
+            event_description = ''
+            event_title = ''
+            event_photo = '' 
+            if "description" in event_tree:
+                event_description = event_tree['description'].replace("'", "`")
+            if "name" in event_tree:
+                event_title = event_tree['name'].replace("'", "`")
+            if "image" in event_tree:
+                event_photo = hd_img
+                # event_photo = event_tree['image']
+
+            dateto = None
+            datefrom = None
+            event_location = ''
+            event_place = ''
+            event_ago = ''
+            event_going = ''
+            event_interested = ''
+            if "startDate" in event_tree:
+                datefrom = event_tree['startDate']
+            if "endDate" in event_tree:
+                dateto = event_tree['endDate']
+            if "location" in event_tree:
+                event_place = event_tree['location']['name']
+                event_location += event_tree['location']['name'] + ', '
+                if "address" in event_tree['location']:
+                    event_location += event_tree['location']['address']['streetAddress'] + ', ' + event_tree['location']['address']['postalCode'] + ', ' + event_tree['location']['address']['addressLocality']
+            if "address" in event_tree:
+                event_location += event_tree['address']['streetAddress'] + ', ' + event_tree['address']['postalCode'] + ', ' + event_tree['address']['addressLocality']
+            if "image" in event_tree:
+                event_photo = hd_img
+                # print('This is the new clear img', hd, '\n\n')
+                # event_photo = hd_img if hd_img else event_tree['image']
+                
+
+            # event_description = get_description(tree)
+            # event_ago_location = get_event_ago(tree)
+            # event_going_number = get_going(tree)
+            # event_title = get_title(tree).replace("'","")
+            # event_date_place = get_date_place(tree)
+            # event_photo = get_photo(tree)
             '''with open(file, "w", encoding="utf-8") as text_file:
                 print(browser.parsed.encode(), file=text_file)
             print('Opening browser...')
-            webbrowser.open_new_tab(file)
-            sleep(1)'''
-            event_tree = getEventJson(tree)
-            if event_tree:
-                event_description = ''
-                event_title = ''
-                event_photo = '' 
-                if "description" in event_tree:
-                    event_description = event_tree['description'].replace("'", "`")
-                if "name" in event_tree:
-                    event_title = event_tree['name'].replace("'", "`")
-                if "image" in event_tree:
-                    event_photo = hd_img
-                    # event_photo = event_tree['image']
+            webbrowser.open_new_tab(file)'''
 
+            '''
+            if " dates left" in event_date_place[0]:
+                print(' - \033[1;31;0mError while getting date:\033[1;0;0m')
+                print(event_date_place)
                 dateto = None
                 datefrom = None
-                event_location = ''
-                event_place = ''
-                event_ago = ''
-                event_going = ''
-                event_interested = ''
-                if "startDate" in event_tree:
-                    datefrom = event_tree['startDate']
-                if "endDate" in event_tree:
-                    dateto = event_tree['endDate']
-                if "location" in event_tree:
-                    event_place = event_tree['location']['name']
-                    event_location += event_tree['location']['name'] + ', '
-                    if "address" in event_tree['location']:
-                        event_location += event_tree['location']['address']['streetAddress'] + ', ' + event_tree['location']['address']['postalCode'] + ', ' + event_tree['location']['address']['addressLocality']
-                if "address" in event_tree:
-                    event_location += event_tree['address']['streetAddress'] + ', ' + event_tree['address']['postalCode'] + ', ' + event_tree['address']['addressLocality']
-                if "image" in event_tree:
-                    event_photo = hd_img
-                    # print('This is the new clear img', hd, '\n\n')
-                    # event_photo = hd_img if hd_img else event_tree['image']
-                    
-    
-                # event_description = get_description(tree)
-                # event_ago_location = get_event_ago(tree)
-                # event_going_number = get_going(tree)
-                # event_title = get_title(tree).replace("'","")
-                # event_date_place = get_date_place(tree)
-                # event_photo = get_photo(tree)
-                '''with open(file, "w", encoding="utf-8") as text_file:
-                    print(browser.parsed.encode(), file=text_file)
-                print('Opening browser...')
-                webbrowser.open_new_tab(file)'''
-
-                '''
-                if " dates left" in event_date_place[0]:
-                    print(' - \033[1;31;0mError while getting date:\033[1;0;0m')
-                    print(event_date_place)
+            else:
+                splitted = event_date_place[0].split(' – ', 1)
+                if len(splitted) < 2:
+                    splitted = event_date_place[0].split(' - ', 1) # – - not equal!!!
+                if len(splitted) < 2:
+                    print(' - \033[1;31;0mError while splitting date: \033[1;0;0m' + event_date_place[0])
                     dateto = None
                     datefrom = None
                 else:
-                    splitted = event_date_place[0].split(' – ', 1)
-                    if len(splitted) < 2:
-                        splitted = event_date_place[0].split(' - ', 1) # – - not equal!!!
-                    if len(splitted) < 2:
-                        print(' - \033[1;31;0mError while splitting date: \033[1;0;0m' + event_date_place[0])
-                        dateto = None
-                        datefrom = None
-                    else:
-                        print(splitted[0])
-                        datefrom = timestring.Date(splitted[0]).date
-                        dateto = timestring.Date(splitted[0][:-4] + splitted[1]).date
-                '''
-                '''datefrom = "2018-01-01 01:01:01"
-                dateto = "2018-01-01 01:01:01"'''
+                    print(splitted[0])
+                    datefrom = timestring.Date(splitted[0]).date
+                    dateto = timestring.Date(splitted[0][:-4] + splitted[1]).date
+            '''
+            '''datefrom = "2018-01-01 01:01:01"
+            dateto = "2018-01-01 01:01:01"'''
 
-                '''
-                lines = ''
-                for line in event_description:
-                    line = line.replace("'","")
-                    lines += line + '<br>'
-                if (len(event_ago_location) == 2):
-                    event_ago = event_ago_location[0]
-                    event_location = event_ago_location[1]
-                elif(len(event_ago_location) == 1):
-                    print(' - event_ago is NULL', end='')
-                    event_ago = None
-                    event_location = event_ago_location[0]
-                else:
-                    event_ago = None
-                    event_location = None
-                    print(' - get_event_ago() --> event_ago_location lenght is '+str(len(event_ago_location)), end='')
+            '''
+            lines = ''
+            for line in event_description:
+                line = line.replace("'","")
+                lines += line + '<br>'
+            if (len(event_ago_location) == 2):
+                event_ago = event_ago_location[0]
+                event_location = event_ago_location[1]
+            elif(len(event_ago_location) == 1):
+                print(' - event_ago is NULL', end='')
+                event_ago = None
+                event_location = event_ago_location[0]
+            else:
+                event_ago = None
+                event_location = None
+                print(' - get_event_ago() --> event_ago_location lenght is '+str(len(event_ago_location)), end='')
 
-                if len(event_date_place) != 1:
-                    if len(event_date_place) == 2:
-                        event_place = [event_date_place[1]]
-                    else:
-                        with open(file, "w", encoding="utf-8") as text_file:
-                            print(browser.parsed.encode(), file=text_file)
-                        pexit('event_date_place lenght is not 1: '+str(event_date_place))
-                '''
-                print('going sele list')
-                sele_list = checkTicket(eventid)
-                
-                event_going = sele_list[0]
-                event_interested = sele_list[1]
-                #price = 'Free'
-                if sele_list[-1]:
-                    price = 'Paid'
+            if len(event_date_place) != 1:
+                if len(event_date_place) == 2:
+                    event_place = [event_date_place[1]]
                 else:
-                    price = 'Free'
-                # Create a new record
-                now = datetime.datetime.now()
-                #event_date = event_date_place[0]
-                #event_place = event_date_place[1]
-                #event_going = event_going_number[0]
-                #event_interested = event_going_number[1]
-                city = ''
-                state = ''
-                country = ''
-                lat = '0.0'
-                lon = '0.0'
-                timezone = ''
-                try:
-                    if event_location is not None:
-                        if "," in event_location:
-                            cityState = event_location.split(",")[-2:]
-                            city = ''.join([i for i in cityState[0] if not i.isdigit()])
-                            state = ''.join([i for i in cityState[1] if not i.isdigit()])
-                            qs = event_location
-                            
+                    with open(file, "w", encoding="utf-8") as text_file:
+                        print(browser.parsed.encode(), file=text_file)
+                    pexit('event_date_place lenght is not 1: '+str(event_date_place))
+            '''
+            print('going sele list')
+            sele_list = checkTicket(eventid)
+            
+            event_going = sele_list[0]
+            event_interested = sele_list[1]
+            #price = 'Free'
+            if sele_list[-1]:
+                price = 'Paid'
+            else:
+                price = 'Free'
+            # Create a new record
+            now = datetime.datetime.now()
+            #event_date = event_date_place[0]
+            #event_place = event_date_place[1]
+            #event_going = event_going_number[0]
+            #event_interested = event_going_number[1]
+            city = ''
+            state = ''
+            country = ''
+            lat = '0.0'
+            lon = '0.0'
+            timezone = ''
+            try:
+                if event_location is not None:
+                    if "," in event_location:
+                        cityState = event_location.split(",")[-2:]
+                        city = ''.join([i for i in cityState[0] if not i.isdigit()])
+                        state = ''.join([i for i in cityState[1] if not i.isdigit()])
+                        qs = event_location
+                        
+                        r = requests.get(mapurl+str(qs))
+                        r = r.json()
+                        if r['status'] == "OK":
+                            country = r['results'][0]['formatted_address'].split(",")[-1::][0].strip()
+                            lat = str(r['results'][0]['geometry']['location']['lat'])
+                            lon = str(r['results'][0]['geometry']['location']['lng'])
+                        if lat == '0.0' and lon =='0.0':
+                            qs = event_place
                             r = requests.get(mapurl+str(qs))
                             r = r.json()
                             if r['status'] == "OK":
                                 country = r['results'][0]['formatted_address'].split(",")[-1::][0].strip()
                                 lat = str(r['results'][0]['geometry']['location']['lat'])
                                 lon = str(r['results'][0]['geometry']['location']['lng'])
-                            if lat == '0.0' and lon =='0.0':
-                                qs = event_place
-                                r = requests.get(mapurl+str(qs))
-                                r = r.json()
-                                if r['status'] == "OK":
-                                    country = r['results'][0]['formatted_address'].split(",")[-1::][0].strip()
-                                    lat = str(r['results'][0]['geometry']['location']['lat'])
-                                    lon = str(r['results'][0]['geometry']['location']['lng'])
-                    else:
-                        qs = event_place
-                        r = requests.get(mapurl+str(qs))
-                        r = r.json()
-                        if r['status'] == "OK":
-                            city = r['results'][0]['formatted_address'].split(",")[-2::][0].strip()
-                            country = r['results'][0]['formatted_address'].split(",")[-2::][1].strip()
-                            lat = str(r['results'][0]['geometry']['location']['lat'])
-                            lon = str(r['results'][0]['geometry']['location']['lng'])
-
-                except Exception as e:
-                    logging.exception("Getevent error"+str(e))
-                
-                event_date = datefrom
-                '''
-                try:
-                    if event_date is not None:
-                        if "from" in event_date:
-                            pieces = event_date.split(" from ")
-                            new_date_format = str(parse(pieces[0]).date())
-                            newpieces = pieces[1].split(" ")
-                            timepieces = newpieces[0].split("-")
-                            datefrom = new_date_format + ' ' + timepieces[0]+':00'
-                            dateto = new_date_format + ' ' + timepieces[1]+':00'
-                            timezone = newpieces[1]
-                        
-                        if "at" in event_date:
-                            pieces = event_date.split(" at ")
-                            new_date_format = str(parse(pieces[0]).date())
-                            newpieces = pieces[1].split(" ")
-                            datefrom = new_date_format + ' ' + newpieces[0]+':00'
-                            dateto = new_date_format + ' ' + newpieces[0]+':00'
-                            timezone = newpieces[1]
-
-
-                except Exception as e:
-                    logging.exception("Getevent error"+str(e))
-                '''
-                sql = "INSERT INTO events (`id`, `page`, `title`, `description`, `date`, `datefrom`, `dateto`, `place`, `ago`, `location`, `going`, `interested`, `photo`, `lat`, `lon`, `lastupdate`, `price`, `city`, `state`, `country`, `LNG`) VALUES (%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (eventid, pageid, event_title, event_description, event_date, datefrom, dateto, event_place, event_ago, event_location, event_going, event_interested, event_photo, lat, lon, now, price, city, state, country,timezone)
-                logging.info("SQL->"+str(sql))   
-                insert_val = upsert_db(sql)
-                print(sql)
-                if insert_val is True:
-                    now = datetime.datetime.now()
-                    logging.info('INFORTATION INSERTED %s' , str(now))
-                    inserted_count += 0
                 else:
-                    logging.info('INFORTATION NOT INSERTED %s' , str(now))
+                    qs = event_place
+                    r = requests.get(mapurl+str(qs))
+                    r = r.json()
+                    if r['status'] == "OK":
+                        city = r['results'][0]['formatted_address'].split(",")[-2::][0].strip()
+                        country = r['results'][0]['formatted_address'].split(",")[-2::][1].strip()
+                        lat = str(r['results'][0]['geometry']['location']['lat'])
+                        lon = str(r['results'][0]['geometry']['location']['lng'])
+
+            except Exception as e:
+                logging.exception("Getevent error"+str(e))
+            
+            event_date = datefrom
+            '''
+            try:
+                if event_date is not None:
+                    if "from" in event_date:
+                        pieces = event_date.split(" from ")
+                        new_date_format = str(parse(pieces[0]).date())
+                        newpieces = pieces[1].split(" ")
+                        timepieces = newpieces[0].split("-")
+                        datefrom = new_date_format + ' ' + timepieces[0]+':00'
+                        dateto = new_date_format + ' ' + timepieces[1]+':00'
+                        timezone = newpieces[1]
+                    
+                    if "at" in event_date:
+                        pieces = event_date.split(" at ")
+                        new_date_format = str(parse(pieces[0]).date())
+                        newpieces = pieces[1].split(" ")
+                        datefrom = new_date_format + ' ' + newpieces[0]+':00'
+                        dateto = new_date_format + ' ' + newpieces[0]+':00'
+                        timezone = newpieces[1]
+
+
+            except Exception as e:
+                logging.exception("Getevent error"+str(e))
+            '''
+            sql = "INSERT INTO events (`id`, `page`, `title`, `description`, `date`, `datefrom`, `dateto`, `place`, `ago`, `location`, `going`, `interested`, `photo`, `lat`, `lon`, `lastupdate`, `price`, `city`, `state`, `country`, `LNG`) VALUES (%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (eventid, pageid, event_title, event_description, event_date, datefrom, dateto, event_place, event_ago, event_location, event_going, event_interested, event_photo, lat, lon, now, price, city, state, country,timezone)
+            logging.info("SQL->"+str(sql))   
+            insert_val = upsert_db(sql)
+            print(sql)
+            if insert_val is True:
+                now = datetime.datetime.now()
+                logging.info('INFORTATION INSERTED %s' , str(now))
+                inserted_count += 0
+            else:
+                logging.info('INFORTATION NOT INSERTED %s' , str(now))
         
-    except Exception as e: # Catch failture
-        print('\nGetevent error')
-        logging.exception("Getevent error"+str(e))
-        pexit()
+    # except Exception as e: # Catch failture
+    #     print('\nGetevent error')
+    #     logging.exception("Getevent error"+str(e))
+    #     pexit()
 
 def get_date_place(tree):
     event_date_place = tree.xpath('//div[@id="event_summary"]/div/div/table/tbody/tr/td[2]/dt/div/text()')  # [0] == date (Friday, November 16, 2018 at 8 PM – 11:55 PM)   [1] == place (Expresszó)
