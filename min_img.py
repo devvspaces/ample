@@ -2,6 +2,8 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+from bs4 import BeautifulSoup
+
 option = webdriver.ChromeOptions()
 #option.binary_location = GOOGLE_CHROME_BIN
 option.add_argument("--headless")  
@@ -20,6 +22,10 @@ def gei(url):
     driver.get(url)
     sleep(5)
     print('Scrape complete')
+
+    source = BeautifulSoup(driver.page_source, 'lxml')
+
+    print(source.prettify())
 
 
     link=driver.find_element_by_xpath("//div[@id='event_header_primary']").find_element_by_xpath('//a')
