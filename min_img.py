@@ -32,6 +32,7 @@ def gei(url):
 
     print('Scraping the real link ', rel_link)
     driver.get(rel_link)
+    sleep(5)
     print('Scraping complete')
 
 
