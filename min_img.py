@@ -21,7 +21,7 @@ fb_link = 'https://web.facebook.com'
 
 def gei(eventid):
     try:
-        url = f'{fb_link}/{eventid}' 
+        url = f'{fb_link}/events/{eventid}' 
         print('Scraping link started ', url)
         driver.get(url)
         sleep(10)
