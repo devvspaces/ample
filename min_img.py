@@ -19,7 +19,8 @@ driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
 
 fb_link = 'https://web.facebook.com'
 
-def gei(url):
+def gei(eventid):
+    url = f'{fb_link}/{eventid}' 
     print('Scraping link started ', url)
     driver.get(url)
     sleep(10)
