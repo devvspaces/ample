@@ -20,36 +20,40 @@ driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
 fb_link = 'https://web.facebook.com'
 
 def gei(eventid):
-    url = f'{fb_link}/{eventid}' 
-    print('Scraping link started ', url)
-    driver.get(url)
-    sleep(10)
-    print('Scrape complete')
+    try:
+        url = f'{fb_link}/{eventid}' 
+        print('Scraping link started ', url)
+        driver.get(url)
+        sleep(10)
+        print('Scrape complete')
 
-    soup = BeautifulSoup(driver.page_source, 'lxml')
+        soup = BeautifulSoup(driver.page_source, 'lxml')
 
-    a_el = soup.find('a',attrs={"rel" : "theater"})
-    rel_link = fb_link + a_el.attrs.get('href')
+        a_el = soup.find('a',attrs={"rel" : "theater"})
+        rel_link = fb_link + a_el.attrs.get('href')
 
-    print('Scraping the real link ', rel_link)
-    driver.get(rel_link)
-    sleep(10)
-    print('Scraping complete')
-
-
-    soup = BeautifulSoup(driver.page_source, 'lxml')
-    # print(soup.prettify())
-
-    # data-visualcompletion="media-vc-image"
-    img_el = soup.find('img',attrs={"data-visualcompletion" : "media-vc-image"})
-    # for img in soup.find_all('img'):
-    #     print(img)
-    # print(img_el, img_el.attrs.get('src'))
+        print('Scraping the real link ', rel_link)
+        driver.get(rel_link)
+        sleep(10)
+        print('Scraping complete')
 
 
-    src_link = img_el.attrs.get('src')
-    if src_link:
-        print('Found Image')
+        soup = BeautifulSoup(driver.page_source, 'lxml')
+        # print(soup.prettify())
+
+        # data-visualcompletion="media-vc-image"
+        img_el = soup.find('img',attrs={"data-visualcompletion" : "media-vc-image"})
+        # for img in soup.find_all('img'):
+        #     print(img)
+        # print(img_el, img_el.attrs.get('src'))
+
+
+        src_link = img_el.attrs.get('src')
+        if src_link:
+            print('Found Image')
+    except Exception as e:
+        print(e)
+        return None
     
     return src_link
 
