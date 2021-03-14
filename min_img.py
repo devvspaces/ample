@@ -22,7 +22,7 @@ fb_link = 'https://web.facebook.com'
 def gei(url):
     print('Scraping link started')
     driver.get(url)
-    sleep(5)
+    sleep(10)
     print('Scrape complete')
 
     soup = BeautifulSoup(driver.page_source, 'lxml')
@@ -32,7 +32,7 @@ def gei(url):
 
     print('Scraping the real link ', rel_link)
     driver.get(rel_link)
-    sleep(5)
+    sleep(10)
     print('Scraping complete')
 
 
