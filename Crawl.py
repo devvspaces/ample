@@ -115,6 +115,10 @@ def getevent(eventid, pageid):
         # except:
         #     hd_img = None
         event_photo = hd_img
+        try:
+            print('\n', event_tree['image'])
+        except:
+            print('\nNo image in his code\n')
 
 
         '''with open(file, "w", encoding="utf-8") as text_file:
