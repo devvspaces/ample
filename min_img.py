@@ -20,7 +20,7 @@ driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=option)
 fb_link = 'https://web.facebook.com'
 
 def gei(url):
-    print('Scraping link started')
+    print('Scraping link started ', url)
     driver.get(url)
     sleep(10)
     print('Scrape complete')
@@ -67,6 +67,3 @@ def gei(url):
     # # Getting the image now
     # img=driver.find_element_by_xpath("//img[@class='spotlight']")
     # return str(img.get_attribute('src'))
-
-url = 'https://web.facebook.com/events/172698764285893'
-print(gei(url))
