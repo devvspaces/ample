@@ -121,9 +121,9 @@ def sensor():
 
 # atexit.register(lambda: scheduler.shutdown())
 
-with app.app_context():
-    print('Starting Job')
-    main_job()
+# with app.app_context():
+#     print('Starting Job')
+#     main_job()
 
 
 cron = Scheduler(daemon=True)
@@ -141,7 +141,7 @@ def job_function():
 #         print('Starting Job')
 #         print_job()
 
-# atexit.register(lambda: cron.shutdown(wait=False))
+atexit.register(lambda: cron.shutdown(wait=False))
 
 # sched.start()
 
@@ -154,4 +154,4 @@ def job_function():
 
 
 if __name__ == "__main__":
-    app.run(threaded=True,host='0.0.0.0', port=80)
+    app.run(threaded=True, host='0.0.0.0', port=80)
