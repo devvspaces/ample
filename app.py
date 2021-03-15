@@ -126,14 +126,14 @@ with app.app_context():
     main_job()
 
 
-# cron = Scheduler(daemon=True)
-# cron.start()
+cron = Scheduler(daemon=True)
+cron.start()
 
-# @cron.interval_schedule(hours=6)
-# def job_function():
-#     with app.app_context():
-#         print('Starting Job')
-#         main_job()
+@cron.interval_schedule(hours=6)
+def job_function():
+    with app.app_context():
+        print('Starting Job')
+        main_job()
 
 # @cron.interval_schedule(minutes=50)
 # def print_function():
@@ -154,4 +154,4 @@ with app.app_context():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(threaded=True,host='0.0.0.0', port=80)
