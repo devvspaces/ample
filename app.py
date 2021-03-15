@@ -121,19 +121,17 @@ def sensor():
 
 # atexit.register(lambda: scheduler.shutdown())
 
-# with app.app_context():
-#     print('Starting Job')
-#     main_job()
 
 
-cron = Scheduler(daemon=True)
-cron.start()
 
-@cron.interval_schedule(hours=6)
-def job_function():
-    with app.app_context():
-        print('Starting Job')
-        main_job()
+# cron = Scheduler(daemon=True)
+# cron.start()
+
+# @cron.interval_schedule(hours=6)
+# def job_function():
+#     with app.app_context():
+#         print('Starting Job')
+#         main_job()
 
 # @cron.interval_schedule(minutes=50)
 # def print_function():
@@ -141,7 +139,7 @@ def job_function():
 #         print('Starting Job')
 #         print_job()
 
-atexit.register(lambda: cron.shutdown(wait=False))
+# atexit.register(lambda: cron.shutdown(wait=False))
 
 # sched.start()
 
@@ -155,3 +153,7 @@ atexit.register(lambda: cron.shutdown(wait=False))
 
 if __name__ == "__main__":
     app.run(threaded=True, host='0.0.0.0', port=80)
+
+    with app.app_context():
+        print('Starting Job')
+        main_job()
