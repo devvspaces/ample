@@ -299,7 +299,7 @@ def getevent(eventid, pageid):
                 logging.info("SQL->"+str(sql))   
                 insert_val = upsert_db(sql)
                 print(sql)
-                print(insert_val)
+                print('\n\nThe insert value', insert_val)
                 if insert_val is True:
                     now = datetime.datetime.now()
                     print('\n\nAn information was just inserted\n\n')
