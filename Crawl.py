@@ -112,7 +112,6 @@ def getevent(eventid, pageid):
             hd_img = gei(eventid)
             if hd_img is not None:
                 print(hd_img)
-                event_photo = hd_img
 
             '''with open(file, "w", encoding="utf-8") as text_file:
                 print(browser.parsed.encode(), file=text_file)
@@ -131,6 +130,8 @@ def getevent(eventid, pageid):
                 if "image" in event_tree:
                     if hd_img is None:
                         event_photo = event_tree['image']
+                    else:
+                        event_photo = hd_img
 
                 dateto = None
                 datefrom = None
@@ -153,6 +154,8 @@ def getevent(eventid, pageid):
                 if "image" in event_tree:
                     if hd_img is None:
                         event_photo = event_tree['image']
+                    else:
+                        event_photo = hd_img
                     
 
                 # event_description = get_description(tree)
