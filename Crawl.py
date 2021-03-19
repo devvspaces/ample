@@ -112,6 +112,7 @@ def getevent(eventid, pageid):
             hd_img = gei(eventid)
             if hd_img is not None:
                 print(hd_img)
+                event_photo = hd_img
 
             '''with open(file, "w", encoding="utf-8") as text_file:
                 print(browser.parsed.encode(), file=text_file)
@@ -298,6 +299,8 @@ def getevent(eventid, pageid):
                 except Exception as e:
                     logging.exception("Getevent error"+str(e))
                 '''
+                print('This is the hd_img: ', hd_img)
+                print('This is the event_photo : ', event_photo)
                 sql = "INSERT INTO events (`id`, `page`, `title`, `description`, `date`, `datefrom`, `dateto`, `place`, `ago`, `location`, `going`, `interested`, `photo`, `lat`, `lon`, `lastupdate`, `price`, `city`, `state`, `country`, `LNG`) VALUES (%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (eventid, pageid, event_title, event_description, event_date, datefrom, dateto, event_place, event_ago, event_location, event_going, event_interested, event_photo, lat, lon, now, price, city, state, country,timezone)
                 logging.info("SQL->"+str(sql))   
                 insert_val = upsert_db(sql)
