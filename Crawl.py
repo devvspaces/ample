@@ -112,6 +112,7 @@ def getevent(eventid, pageid):
             hd_img = gei(eventid)
             if hd_img is not None:
                 print(hd_img)
+                event_photo = hd_img
 
             '''with open(file, "w", encoding="utf-8") as text_file:
                 print(browser.parsed.encode(), file=text_file)
@@ -300,6 +301,7 @@ def getevent(eventid, pageid):
                 print(sql)
                 if insert_val is True:
                     now = datetime.datetime.now()
+                    print('\n\nAn information was just inserted\n\n')
                     logging.info('INFORTATION INSERTED %s' , str(now))
                     inserted_count += 0
                 else:
