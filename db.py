@@ -22,15 +22,15 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 def upsert_db(query, args=()):
-    # try:
-    cur = get_db().execute(query, args)
-    get_db().commit()
-    cur.close()
-    return True
-    # except Exception as e:
-
-    #     logging.warning(str(e))
-    #     return False
+    try:
+        cur = get_db().execute(query, args)
+        get_db().commit()
+        cur.close()
+        return True
+    except Exception as e:
+        print(e)
+        logging.warning(str(e))
+        return False
 
 def page_db():
     result = requests.get(url, headers=headers)
