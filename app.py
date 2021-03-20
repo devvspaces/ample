@@ -121,15 +121,15 @@ def sensor():
 
 # atexit.register(lambda: scheduler.shutdown())
 
-# @app.route('/start')
-# def starter():
-#     with app.app_context():
-#         print('Starting Job')
-#         main_job()
+@app.route('/start')
+def starter():
+    with app.app_context():
+        print('Starting Job')
+        main_job()
 
-with app.app_context():
-    print('Starting Job')
-    main_job()
+# with app.app_context():
+#     print('Starting Job')
+#     main_job()
 
 
 # cron = Scheduler(daemon=True)

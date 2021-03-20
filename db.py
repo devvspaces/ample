@@ -9,7 +9,26 @@ url = "http://www.bonspiels.net/home/fb_page"
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
 
-logging.basicConfig(filename='db_logs.log',level=logging.DEBUG)
+
+# Setting the logger for this module
+# Create the logger and set the logging level
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.WARNING)
+
+# Create file handler
+file_handler = logging.FileHandler('db_logs.log')
+
+# Create formatter
+formatter = logging.Formatter("%(levelname)s:%(name)s:%(message)s")
+
+# Add formatter to the file handler
+file_handler.setFormatter(formatter)
+
+# Add the file handler to the logger
+logger.addHandler(file_handler)
+
+
+# logging.basicConfig(filename='db_logs.log',level=logging.DEBUG)
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -31,7 +50,7 @@ def upsert_db(query, args=()):
         cur.close()
         return True
     except Exception as e:
-        logging.exception(e)
+        logger.exception(e)
         return False
 
 def page_db():

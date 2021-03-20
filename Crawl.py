@@ -26,6 +26,20 @@ from min_img import gei
 # sched = BlockingScheduler()
 
 
+abominations = ['\'','\"']
+
+# Convenience functions
+def replace_syntax(text):
+    new_text = ''
+    if text:
+        for i in text:
+            if i in [abominations]:
+                new_text+='-'
+            else:
+                new_text+=i
+    return new_text
+
+
 """ headers = {'user-agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36'}
 proxies = {'https': 'https://88.209.225.150:53281', 'http': 'http://88.209.225.150:53281'} """
 file = 'del.html'
@@ -147,11 +161,30 @@ def getevent(eventid, pageid):
                     dateto = event_tree['endDate']
                 if "location" in event_tree:
                     event_place = event_tree['location']['name']
-                    event_location += event_tree['location']['name'] + ', '
+                    if event_place is not None:
+                        event_location += event_tree['location']['name'] + ', '
                     if "address" in event_tree['location']:
-                        event_location += event_tree['location']['address']['streetAddress'] + ', ' + event_tree['location']['address']['postalCode'] + ', ' + event_tree['location']['address']['addressLocality']
+                        event_location1 = event_tree['location']['address']['streetAddress']
+                        event_location2 = event_tree['location']['address']['postalCode']
+                        event_location3 = event_tree['location']['address']['addressLocality']
+
+                        # Cleaning datas
+                        event_location1 = event_location1 if event_location1 is not None else ''
+                        event_location2 = event_location2 if event_location2 is not None else ''
+                        event_location3 = event_location3 if event_location3 is not None else ''
+
+                        event_location += event_location1 + ', ' + event_location2 + ', ' + event_location3
                 if "address" in event_tree:
-                    event_location += event_tree['address']['streetAddress'] + ', ' + event_tree['address']['postalCode'] + ', ' + event_tree['address']['addressLocality']
+                    event_location1 = event_tree['address']['streetAddress']
+                    event_location2 = event_tree['address']['postalCode']
+                    event_location3 = event_tree['address']['addressLocality']
+
+                    # Cleaning datas
+                    event_location1 = event_location1 if event_location1 is not None else ''
+                    event_location2 = event_location2 if event_location2 is not None else ''
+                    event_location3 = event_location3 if event_location3 is not None else ''
+                    
+                    event_location += event_location1 + ', ' + event_location2 + ', ' + event_location3
                 if "image" in event_tree:
                     if hd_img is None:
                         event_photo = event_tree['image']
@@ -299,6 +332,30 @@ def getevent(eventid, pageid):
                 except Exception as e:
                     logging.exception("Getevent error"+str(e))
                 '''
+
+                # Cleaning all things that could cause syntax errors
+                eventid = replace_syntax(eventid)
+                pageid = replace_syntax(pageid)
+                event_title = replace_syntax(event_title)
+                event_description = replace_syntax(event_description)
+                event_date = replace_syntax(event_date)
+                datefrom = replace_syntax(datefrom)
+                dateto = replace_syntax(dateto)
+                event_place = replace_syntax(event_place)
+                event_ago = replace_syntax(event_ago)
+                event_location = replace_syntax(event_location)
+                event_going = replace_syntax(event_going)
+                event_interested = replace_syntax(event_interested)
+                event_photo = replace_syntax(event_photo)
+                lat = replace_syntax(lat)
+                lon = replace_syntax(lon)
+                now = replace_syntax(now)
+                price = replace_syntax(price)
+                city = replace_syntax(city)
+                state = replace_syntax(state)
+                country = replace_syntax(country)
+                timezone = replace_syntax(timezone)
+
                 sql = "INSERT INTO events (`id`, `page`, `title`, `description`, `date`, `datefrom`, `dateto`, `place`, `ago`, `location`, `going`, `interested`, `photo`, `lat`, `lon`, `lastupdate`, `price`, `city`, `state`, `country`, `LNG`) VALUES (%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (eventid, pageid, event_title, event_description, event_date, datefrom, dateto, event_place, event_ago, event_location, event_going, event_interested, event_photo, lat, lon, now, price, city, state, country,timezone)
                 logging.info("SQL->"+str(sql))   
                 insert_val = upsert_db(sql)
