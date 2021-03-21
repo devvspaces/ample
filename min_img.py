@@ -4,6 +4,28 @@ from selenium.webdriver.common.keys import Keys
 
 from bs4 import BeautifulSoup
 
+
+
+
+# Create the logger and set the logging level
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.WARNING)
+
+
+# Create formatter
+formatter = logging.Formatter("%(levelname)s:%(name)s:%(message)s")
+
+
+# Create file handler
+file_handler = logging.FileHandler('hd_img.log')
+# Add formatter to the file handler
+file_handler.setFormatter(formatter)
+
+# Add the file handler to the logger
+logger.addHandler(file_handler)
+
+
+
 option = webdriver.ChromeOptions()
 #option.binary_location = GOOGLE_CHROME_BIN
 option.add_argument("--headless")  
@@ -53,6 +75,7 @@ def gei(eventid):
             print('Found Image')
     except Exception as e:
         print(e)
+        logger.exception('Error in the hd image crawler')
         return None
     
     return src_link

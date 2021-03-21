@@ -26,18 +26,55 @@ from min_img import gei
 # sched = BlockingScheduler()
 
 
+
+# Create the logger and set the logging level
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Create the logger for errors only
+logger2 = logging.getLogger('Crawler Errors')
+logger2.setLevel(logging.WARNING)
+
+
+# Create formatter
+formatter = logging.Formatter("%(levelname)s:%(name)s:%(message)s")
+
+
+# Create file handler
+file_handler = logging.FileHandler('crawler_info.log')
+# Add formatter to the file handler
+file_handler.setFormatter(formatter)
+
+
+# Create file handler
+file_handler2 = logging.FileHandler('crawler_errors.log')
+# Add formatter to the file handler
+file_handler2.setFormatter(formatter)
+
+# Add the file handler to the logger
+logger.addHandler(file_handler)
+logger2.addHandler(file_handler2)
+
+
+
+
+
 abominations = ['\'','\"']
 
 # Convenience functions
 def replace_syntax(text):
-    new_text = ''
-    if text:
-        for i in text:
-            if i in [abominations]:
-                new_text+='-'
-            else:
-                new_text+=i
-    return new_text
+    try:
+        new_text = ''
+        if text:
+            for i in text:
+                if i in abominations:
+                    new_text+='-'
+                else:
+                    new_text+=i
+        return new_text
+    except Exception as e:
+        logger2.warning('This text syntax was tried to be replaced: '+str(text))
+        logger2.exception(e)
 
 
 """ headers = {'user-agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36'}
@@ -84,6 +121,7 @@ def login():
     except Exception as e:
         print(str(e))
         logging.exception("login error"+str(e))
+        # logger.exception('This is a logging in error')
 
     '''with open(file, "w", encoding="utf-8") as text_file:
         print(browser.parsed, file=text_file)
@@ -260,12 +298,15 @@ def getevent(eventid, pageid):
                     price = 'Paid'
                 else:
                     price = 'Free'
+
                 # Create a new record
                 now = datetime.datetime.now()
+
                 #event_date = event_date_place[0]
                 #event_place = event_date_place[1]
                 #event_going = event_going_number[0]
-                #event_interested = event_going_number[1]
+                #event_interested = event_going_number[1]#
+
                 city = ''
                 state = ''
                 country = ''
@@ -305,7 +346,9 @@ def getevent(eventid, pageid):
                             lon = str(r['results'][0]['geometry']['location']['lng'])
 
                 except Exception as e:
-                    logging.exception("Getevent error"+str(e))
+                    # logging.exception("Getevent error"+str(e))
+                    print('\n\nException occured in the event location place\n\n')
+                    logger2.exception(e)
                 
                 event_date = datefrom
                 '''
@@ -357,21 +400,24 @@ def getevent(eventid, pageid):
                 timezone = replace_syntax(timezone)
 
                 sql = "INSERT INTO events (`id`, `page`, `title`, `description`, `date`, `datefrom`, `dateto`, `place`, `ago`, `location`, `going`, `interested`, `photo`, `lat`, `lon`, `lastupdate`, `price`, `city`, `state`, `country`, `LNG`) VALUES (%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (eventid, pageid, event_title, event_description, event_date, datefrom, dateto, event_place, event_ago, event_location, event_going, event_interested, event_photo, lat, lon, now, price, city, state, country,timezone)
-                logging.info("SQL->"+str(sql))   
+                # logging.info("SQL->"+str(sql))
+                logger.info("SQL->"+str(sql))
                 insert_val = upsert_db(sql)
-                print(sql)
+                # print(sql)
                 print('\n\nThe insert value', insert_val)
                 if insert_val is True:
                     now = datetime.datetime.now()
                     print('\n\nAn information was just inserted\n\n')
-                    logging.info('INFORTATION INSERTED %s' , str(now))
+                    # logging.info('INFORTATION INSERTED %s' , str(now))
+                    logger.info('INFORTATION INSERTED %s' , str(now))
                     inserted_count += 0
                 else:
-                    logging.info('INFORTATION NOT INSERTED %s' , str(now))
+                    logger.warning('INFORMATION NOT INSERTED %s' , str(now))
         
     except Exception as e: # Catch failture
         print('\nGetevent error')
-        logging.exception("Getevent error"+str(e))
+        logger2.exception('\nThis is the ending error, the events crawler has stopped working\n')
+        # logging.exception("Getevent error"+str(e))
         pexit()
 
 def get_date_place(tree):
@@ -521,7 +567,7 @@ def main_job():
     #login()
     print("Starting list page")
     listpage = listpages()
-    print(listpage)
+    # print(listpage)
     #sele_login()
     for pageid in listpage:
         print("getting page"+str(pageid))
@@ -531,14 +577,17 @@ def main_job():
     nowminday = datetime.datetime.now() + datetime.timedelta(days=-1)
     now = datetime.datetime.now()
     if (inserted_count > 0):
-        logging.info(str(now)+'-> '+inserted_count + ' new row inserted')
+        logger.info(str(now)+'-> '+inserted_count + ' new row inserted')
+        # logging.info(str(now)+'-> '+inserted_count + ' new row inserted')
         print(inserted_count + ' new row inserted')
     else:
-        logging.info(str(now)+'-> Pages are already updated less than an hour ago, no new events queried')
+        logger.info(str(now)+'-> Pages are already updated less than an hour ago, no new events queried')
+        # logging.info(str(now)+'-> Pages are already updated less than an hour ago, no new events queried')
         print('Pages are already updated less than an hour ago, no new events queried')
     
     print('Script end at '+str(now.hour)+':'+str(now.minute))
-    logging.info('Script end at '+str(now.hour)+':'+str(now.minute))
+    logger.info('Script end at '+str(now.hour)+':'+str(now.minute))
+    # logging.info('Script end at '+str(now.hour)+':'+str(now.minute))
 
 
 def print_job():
