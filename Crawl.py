@@ -65,16 +65,18 @@ abominations = ['\'','\"']
 def replace_syntax(text):
     try:
         new_text = ''
-        if text:
+        if text and type(text).__name__=='str':
             for i in text:
                 if i in abominations:
                     new_text+='-'
                 else:
                     new_text+=i
-        return new_text
+            return new_text
     except Exception as e:
         logger2.warning('This text syntax was tried to be replaced: '+str(text))
         logger2.exception(e)
+
+    return text
 
 
 """ headers = {'user-agent': 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36'}
