@@ -142,28 +142,25 @@ def reload_db():
                 dict1 =  {}
 
                 # Converting the date to datetime obj
-                dates = (event[6], event[4],)
+                date = event[6] if event[6] else event[4]
                 logger.debug('Got the dates: '+str(dates))
-                if dates:
-                    logger.debug('Got to the if dates')
-                    for date in dates:
-                        logger.debug('Started looping the dates: '+date)
+                if date:
+                    logger.debug('Started condition date: '+date)
+                    try:
+                        # Converting string to datetime
+                        date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
+                        time_distance = (date-today).days
 
-                        try:
-                            # Converting string to datetime
-                            date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
-                            time_distance = (date-today).days
+                        logger.debug('Got a time difference: '+str(time_distance))
 
-                            logger.debug('Got a time difference: '+str(time_distance))
-
-                            # only add events that are not yet finished or started in the last 30 days
-                            if (time_distance > 0) or (fabs(time_distance) < 30):
-                                logger.debug(f'{date} {time_distance.days}: This time is added')
-                                dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
-                                eventList.append(dict1)
-                                break
-                        except Exception as e:
-                            logger.exception()
+                        # only add events that are not yet finished or started in the last 30 days
+                        if (time_distance > 0) or (fabs(time_distance) < 30):
+                            logger.debug(f'{date} {time_distance.days}: This time is added')
+                            dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
+                            eventList.append(dict1)
+                            break
+                    except Exception as e:
+                        logger.exception()
 
             return Response(json.dumps(eventList),  mimetype='application/json')
         except Exception as e:
