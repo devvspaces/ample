@@ -152,7 +152,7 @@ def reload_db():
                         try:
                             # Converting string to datetime
                             date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
-                            time_distance = (date-now).days
+                            time_distance = (date-today).days
 
                             logger.debug('Got a time difference: '+str(time_distance))
 
@@ -163,7 +163,6 @@ def reload_db():
                                 eventList.append(dict1)
                                 break
                         except Exception as e:
-                            print(e)
                             logger.exception()
 
             return Response(json.dumps(eventList),  mimetype='application/json')
