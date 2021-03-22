@@ -177,7 +177,7 @@ def hd_image_handler():
     if request.method == 'GET':
         logger.debug('Got to GET the hd images function')
         try:
-            for eid in redo:
+            for eid in redos:
                 photo = gei(eid)
                 if photo is not None and (photo.find('t1.0-0/cp0/e15/') != -1):
                     sql = f"UPDATE `events` SET photo={photo} WHERE id ='"+str(eid)+"'"
