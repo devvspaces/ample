@@ -10,7 +10,7 @@ import math
 
 now = pytz.utc.localize(datetime.datetime.now())
 
-x = datetime.datetime.strptime(None, '%Y-%m-%dT%H:%M:%S%z')
+# x = datetime.datetime.strptime('', '%Y-%m-%dT%H:%M:%S%z')
 # print(dir(math))
 # print(fabs((x-now).days))
-print(str(('1','1',)))
+print('')
