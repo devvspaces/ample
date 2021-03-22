@@ -157,7 +157,8 @@ def reload_db():
 
                         # only add events that are not yet finished or started in the last 30 days
                         if (time_distance > 0) or (fabs(time_distance) < 30):
-                            logger.debug('{} {}: This time is added'.format(date, time_distance.days))
+                            # logger.debug('{} {}: This time is added'.format(date, ))
+                            logger.info(str(time_distance.days)+' : '+str(date)+'   This time is added')
                             dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
                             eventList.append(dict1)
                             break
