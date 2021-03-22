@@ -179,7 +179,7 @@ def hd_image_handler():
         try:
             for eid in redos:
                 photo = gei(eid)
-                if photo is not None and (photo.find('t1.0-0/cp0/e15/') != -1):
+                if photo is not None and (eid.find('t1.0-0/cp0/e15/') != -1):
                     sql = f"UPDATE `events` SET photo={photo} WHERE id ='"+str(eid)+"'"
                     insert_val = upsert_db(sql)
                     # if insert_val == True:
