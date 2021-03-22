@@ -177,4 +177,4 @@ def starter():
 
 if __name__ == "__main__":
     host = '127.0.0.1' if DEBUG else '0.0.0.0'
-    app.run()
+    app.run(threaded=True, host=host, port=80)
