@@ -181,7 +181,7 @@ def hd_image_handler():
                 photo = gei(eid)
                 event = query_db("SELECT photo from events WHERE id ='"+str(eid)+"'")[0][0]
                 # Select the event from the db
-                if photo is not None and (eid.find('t1.0-0/cp0/e15/') != -1):
+                if photo is not None and (event.find('t1.0-0/cp0/e15/') != -1):
                     sql = f"UPDATE `events` SET photo={photo} WHERE id ='"+str(eid)+"'"
                     insert_val = upsert_db(sql)
                     # if insert_val == True:
