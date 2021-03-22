@@ -146,7 +146,7 @@ def reload_db():
                 print(date)
                 date = date.replace(' ','')
                 logger.debug('Got the date: '+str(date))
-                if (date is not None) and (len(date) > 0):
+                if (date is not None) and (len(date) > 10):
                     print('Length of date: '+date)
                     logger.debug('Started condition date: '+date)
                     print(type(date))
