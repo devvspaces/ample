@@ -130,11 +130,11 @@ def getAllEvents():
 
 
 @app.route('/redo', methods = ['GET', 'POST'])
-def reload_db(a=''):
+def reload_db():
     try:
-        today = pytz.utc.localize(datetime.datetime.now())
         if request.method == 'GET':
             try:
+                today = pytz.utc.localize(datetime.datetime.now())
                 eventList = []
                 for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
                     dict1 =  {}
