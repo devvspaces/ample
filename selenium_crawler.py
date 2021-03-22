@@ -47,8 +47,9 @@ option.add_argument('--disable-gpu')
 option.add_argument("--incognito")
 
 
-browser = webdriver.Chrome(executable_path=r"D:\software\chromedriver", chrome_options=option)
+# browser = webdriver.Chrome(executable_path=r"D:\software\chromedriver", chrome_options=option)
 #browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,  chrome_options=option)
+# browser = webdriver.Chrome('/Users/HP6460B/Downloads/driver_all/chromedriver')
 def checkTicket(eventId):
     try:
         print('checking ticket')

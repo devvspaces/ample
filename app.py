@@ -8,7 +8,9 @@ from apscheduler.scheduler import Scheduler
 
 import json
 import atexit
-from Crawl import main_job, print_job 
+from Crawl import main_job, print_job
+
+from CONFIG import DEBUG
 
 app = Flask(__name__)
 
@@ -100,6 +102,20 @@ def getAllEvents():
             return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')
 
 
+@app.route('/redo', methods = ['GET', 'POST'])
+def reload_db(a=''):
+    if request.method == 'GET':
+        try:
+            eventList = []
+            for event in query_db('SELECT * from events'):
+                dict1 =  {}
+                dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
+                eventList.append(dict1)
+            return Response(json.dumps(eventList),  mimetype='application/json')
+        except Exception as e: 
+            return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')
+
+
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
@@ -160,4 +176,5 @@ def starter():
 
 
 if __name__ == "__main__":
-    app.run(threaded=True, host='0.0.0.0', port=80)
+    host = '127.0.0.1' if DEBUG else '0.0.0.0'
+    app.run()

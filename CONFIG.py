@@ -7,6 +7,9 @@ MYSQL_PASS = ''
 MYSQL_DB = 'event_crawler'
 
 
+DEBUG = True
+
+
 # Skip geocodeing the location:
 
 GEOCACHE_HOST = ''

@@ -15,7 +15,7 @@ import CONFIG
 from db import get_db, query_db, upsert_db
 from selenium_crawler import checkTicket, sele_login, closeBrowser
 from geopy.geocoders import Nominatim
-from dateutil.parser import parse
+# from dateutil.parser import parse
 from itertools import chain
 import xml.dom.minidom
 import time
