@@ -163,6 +163,7 @@ def reload_db():
                             break
                     except Exception as e:
                         logger.exception()
+                        break
 
             return Response(json.dumps(eventList),  mimetype='application/json')
         except Exception as e:
