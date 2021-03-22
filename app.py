@@ -107,7 +107,7 @@ def reload_db(a=''):
     if request.method == 'GET':
         try:
             eventList = []
-            for event in query_db('SELECT * from events'):
+            for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
                 dict1 =  {}
                 dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
                 eventList.append(dict1)
