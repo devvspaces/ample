@@ -131,16 +131,20 @@ def getAllEvents():
 
 @app.route('/redo', methods = ['GET', 'POST'])
 def reload_db():
+    logger.debug('Started the redo function')
     try:
         if request.method == 'GET':
+            logger.debug('Got to GET the redo function')
             try:
                 today = pytz.utc.localize(datetime.datetime.now())
+                logger.debug('Got the time: '+today)
                 eventList = []
                 for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
                     dict1 =  {}
 
                     # Converting the date to datetime obj
                     dates = (event[6], event[5], event[4],)
+                    logger.debug('Got the dates: '+str(dates))
                     if date1s:
                         for date in dates:
                             date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')

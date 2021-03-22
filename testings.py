@@ -11,5 +11,6 @@ import math
 now = pytz.utc.localize(datetime.datetime.now())
 
 x = datetime.datetime.strptime('2020-06-30T19:00:00+0200', '%Y-%m-%dT%H:%M:%S%z')
-print(dir(math))
-print(fabs((x-now).days))
+# print(dir(math))
+# print(fabs((x-now).days))
+print(str(('1','1',)))
