@@ -148,6 +148,7 @@ def reload_db():
                 if (date is not None) or (len(date) > 0):
                     print('Length of date: '+date)
                     logger.debug('Started condition date: '+date)
+                    print(type(date))
                     try:
                         # Converting string to datetime
                         date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
