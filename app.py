@@ -15,6 +15,8 @@ import json
 import atexit
 from Crawl import main_job, print_job
 
+from min_img import gei
+
 from CONFIG import DEBUG
 
 app = Flask(__name__)
@@ -166,6 +168,27 @@ def reload_db():
             logger.exception(e)
             return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')
 
+
+
+redos = [209450986765684, 862736531139795, 3144988098936400, 137077944834086, 2940789689483198, 837239806849796, 1120952338341193, 326883501919730, 234541324918548, 592916348056639, 2531192603788836, 321623559228657, 447184343054004, 307599040230220, 336351167660644, 4153826711295673, 759961067984046, 1988433661297907, 270790871071944, 5271087176295713, 749037079384748, 462547271452710, 3921749577876683, 3512607348850581, 771383863491202, 480601683102641, 894071378093309, 145110577460008, 1929952800491253, 257774585853919, 716116859277581, 144654810769811, 424763428788591, 451581135927676, 415187772887398, 738152626902070, 471326357379541, 442042940349147, 892710814838610]
+@app.route('/hd_img', methods = ['GET', 'POST'])
+def hd_image_handler():
+    logger.debug('Started the get hd images function')
+    if request.method == 'GET':
+        logger.debug('Got to GET the hd images function')
+        try:
+            for eid in redo:
+                photo = gei(eid)
+                if photo is not None and (photo.find('t1.0-0/cp0/e15/') != -1):
+                    sql = f"UPDATE `events` SET photo={photo} WHERE id ='"+str(eid)+"'"
+                    insert_val = upsert_db(sql)
+                    if insert_val == True:
+                        print(eid, 'Inserted')
+                        logger.info(f"{eid} -->  {Inserted}")
+            return Response(json.dumps(eventList),  mimetype='application/json')
+        except Exception as e:
+            logger.exception(e)
+            return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')
 
 
 
