@@ -182,9 +182,9 @@ def hd_image_handler():
                 if photo is not None and (photo.find('t1.0-0/cp0/e15/') != -1):
                     sql = f"UPDATE `events` SET photo={photo} WHERE id ='"+str(eid)+"'"
                     insert_val = upsert_db(sql)
-                    if insert_val == True:
-                        print(eid, 'Inserted')
-                        logger.info(f"{eid} -->  {Inserted}")
+                    # if insert_val == True:
+                    print(eid, 'Inserted', insert_val)
+                    logger.info(f"{eid} -->  'Inserted': {insert_val}")
             return Response(json.dumps(eventList),  mimetype='application/json')
         except Exception as e:
             logger.exception(e)
