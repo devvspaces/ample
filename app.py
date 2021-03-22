@@ -142,7 +142,7 @@ def reload_db():
                 dict1 =  {}
 
                 # Converting the date to datetime obj
-                dates = (event[6], event[5], event[4],)
+                dates = (event[6], event[4],)
                 logger.debug('Got the dates: '+str(dates))
                 if dates:
                     logger.debug('Got to the if dates')
@@ -152,6 +152,8 @@ def reload_db():
                         # Converting string to datetime
                         date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
                         time_distance = (date-now).days
+
+                        logger.debug('Got a time difference: '+str(time_distance))
 
                         # only add events that are not yet finished or started in the last 30 days
                         if (time_distance > 0) or (fabs(time_distance) < 30):
