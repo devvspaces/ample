@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 # Create the logger and set the logging level
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.DEBUG)
 
 # Create file handler
 file_handler = logging.FileHandler('app_logs.log')
@@ -110,51 +110,51 @@ def postPageApi():
 @app.route('/getevents', methods = ['GET', 'POST'])
 @cross_origin()
 def getAllEvents():
-    try:
-        if request.method == 'GET':
-            try:
-                eventList = []
-                eId = request.args.get('eId')
-                if eId is not None:
-                    for event in query_db("select * from events where id ='"+str(eId)+"'"):
-                        dict1 =  {}
-                        dict1 = {'id':event[0], 'page':event[1], 'title': event[2], 'description':event[3],'date':event[4], 'place':event[7], 'location':event[9], 'going':event[10], 'interested':event[11],'photo':event[12],'price':event[16],'type':event[21]}
-                        eventList.append(dict1)
-                else:
-                    for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
-                        dict1 =  {}
-                        dict1 = {'id':event[0], 'page':event[1], 'title': event[2], 'description':event[3],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'place':event[7], 'location':event[9], 'going':event[10], 'interested':event[11],'photo':event[12], 'lat':event[13],'lon':event[14],'price':event[16],'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
-                        eventList.append(dict1)
-                return Response(json.dumps(eventList),  mimetype='application/json')
-            except Exception as e: 
-                return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')
-    except Exception as e:
-        logger.exception()
+    if request.method == 'GET':
+        try:
+            eventList = []
+            eId = request.args.get('eId')
+            if eId is not None:
+                for event in query_db("select * from events where id ='"+str(eId)+"'"):
+                    dict1 =  {}
+                    dict1 = {'id':event[0], 'page':event[1], 'title': event[2], 'description':event[3],'date':event[4], 'place':event[7], 'location':event[9], 'going':event[10], 'interested':event[11],'photo':event[12],'price':event[16],'type':event[21]}
+                    eventList.append(dict1)
+            else:
+                for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
+                    dict1 =  {}
+                    dict1 = {'id':event[0], 'page':event[1], 'title': event[2], 'description':event[3],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'place':event[7], 'location':event[9], 'going':event[10], 'interested':event[11],'photo':event[12], 'lat':event[13],'lon':event[14],'price':event[16],'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
+                    eventList.append(dict1)
+            return Response(json.dumps(eventList),  mimetype='application/json')
+        except Exception as e: 
+            return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')    
 
 
 @app.route('/redo', methods = ['GET', 'POST'])
 def reload_db(a=''):
-    today = pytz.utc.localize(datetime.datetime.now())
-    if request.method == 'GET':
-        try:
-            eventList = []
-            for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
-                dict1 =  {}
+    try:
+        today = pytz.utc.localize(datetime.datetime.now())
+        if request.method == 'GET':
+            try:
+                eventList = []
+                for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
+                    dict1 =  {}
 
-                # Converting the date to datetime obj
-                dates = (event[6], event[5], event[4],)
-                if date1s:
-                    for date in dates:
-                        date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
-                        time_distance = (date-now).days
-                        # only add events that are not yet finished or started in the last 30 days
-                        if (time_distance > 0) or (fabs(time_distance) < 30):
-                            dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
-                            eventList.append(dict1)
-                            break
-            return Response(json.dumps(eventList),  mimetype='application/json')
-        except Exception as e: 
-            return Response(json.dumps([{'success':False, 'Exception': str(e.message)}]), mimetype='application/json')
+                    # Converting the date to datetime obj
+                    dates = (event[6], event[5], event[4],)
+                    if date1s:
+                        for date in dates:
+                            date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
+                            time_distance = (date-now).days
+                            # only add events that are not yet finished or started in the last 30 days
+                            if (time_distance > 0) or (fabs(time_distance) < 30):
+                                dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
+                                eventList.append(dict1)
+                                break
+                return Response(json.dumps(eventList),  mimetype='application/json')
+            except Exception as e: 
+                return Response(json.dumps([{'success':False, 'Exception': str(e.message)}]), mimetype='application/json')
+    except Exception as e:
+        logger.exception()
 
 
 @app.teardown_appcontext
