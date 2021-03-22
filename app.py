@@ -1,3 +1,7 @@
+import datetime
+import pytz
+from math import fabs
+
 from flask import Flask, g, Response, request
 from flask_cors import CORS, cross_origin
 from db import get_db, query_db, upsert_db, page_db
@@ -104,16 +108,27 @@ def getAllEvents():
 
 @app.route('/redo', methods = ['GET', 'POST'])
 def reload_db(a=''):
+    today = pytz.utc.localize(datetime.datetime.now())
     if request.method == 'GET':
         try:
             eventList = []
             for event in query_db('SELECT a.*, b.category, b.user from events a inner join pages b on a.page=b.page'):
                 dict1 =  {}
-                dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
-                eventList.append(dict1)
+
+                # Converting the date to datetime obj
+                dates = (event[6], event[5], event[4],)
+                if date1s:
+                    for date in dates:
+                        date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
+                        time_distance = (date-now).days
+                        # only add events that are not yet finished or started in the last 30 days
+                        if (time_distance > 0) or (fabs(time_distance) < 30):
+                            dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
+                            eventList.append(dict1)
+                            break
             return Response(json.dumps(eventList),  mimetype='application/json')
         except Exception as e: 
-            return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')
+            return Response(json.dumps([{'success':False, 'Exception': str(e.message)}]), mimetype='application/json')
 
 
 @app.teardown_appcontext
