@@ -144,7 +144,7 @@ def reload_db():
                 # Converting the date to datetime obj
                 date = event[6] if event[6] else event[4]
                 logger.debug('Got the date: '+str(date))
-                if date:
+                if len(date) > 0:
                     logger.debug('Started condition date: '+date)
                     try:
                         # Converting string to datetime
