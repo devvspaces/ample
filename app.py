@@ -29,7 +29,7 @@ logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler('app_logs.log')
 
 # Create formatter
-formatter = logging.Formatter("%(levelname)s:%(name)s:%(message)s")
+formatter = logging.Formatter("%(levelname)s:%(asctime)s:%(message)s")
 
 # Add formatter to the file handler
 file_handler.setFormatter(formatter)
@@ -144,7 +144,7 @@ def reload_db():
                 # Converting the date to datetime obj
                 dates = (event[6], event[5], event[4],)
                 logger.debug('Got the dates: '+str(dates))
-                if date1s:
+                if dates:
                     for date in dates:
                         date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
                         time_distance = (date-now).days
