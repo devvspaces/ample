@@ -156,7 +156,7 @@ def reload_db():
                                 break
                 return Response(json.dumps(eventList),  mimetype='application/json')
             except Exception as e: 
-                return Response(json.dumps([{'success':False, 'Exception': str(e.message)}]), mimetype='application/json')
+                return Response(json.dumps([{'success':False, 'Exception': str(e)}]), mimetype='application/json')
     except Exception as e:
         logger.exception()
 
