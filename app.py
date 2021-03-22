@@ -147,9 +147,7 @@ def reload_db():
                 date = date.replace(' ','')
                 logger.debug('Got the date: '+str(date))
                 if (date is not None) and (len(date) > 10):
-                    print('Length of date: '+date)
                     logger.debug('Started condition date: '+date)
-                    print(type(date))
                     try:
                         # Converting string to datetime
                         date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
@@ -159,7 +157,7 @@ def reload_db():
 
                         # only add events that are not yet finished or started in the last 30 days
                         if (time_distance > 0) or (fabs(time_distance) < 30):
-                            logger.debug(f'{date} {time_distance.days}: This time is added')
+                            logger.debug('{} {}: This time is added'.format(date, time_distance.days))
                             dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
                             eventList.append(dict1)
                             break
