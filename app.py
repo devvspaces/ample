@@ -160,7 +160,6 @@ def reload_db():
                             logger.debug('{} {}: This time is added'.format(date, time_distance))
                             dict1 = {'id':event[0], 'page':event[1], 'title': event[2],'date':event[4], 'datefrom':event[5], 'dateto':event[6], 'photo':event[12], 'city':event[17],'country':event[18],'state':event[19],'timezone':event[20],'type':event[21], 'user':event[22]}
                             eventList.append(dict1)
-                            break
                     except Exception as e:
                         logger.exception(e)
                         break
